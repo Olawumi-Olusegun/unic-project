@@ -1,20 +1,29 @@
 import { useState } from 'react';
 import Button from './Button'
-import CommandModal from './modals/CommandModal'
+import WebScrapping from './WebScrapping';
+import Command from './Command';
+import { ModalType } from '@/types';
 
 
 const ChatInput = () => {
 
     const [isOpen, setIsOpen] = useState(true);
 
+    const [modalType, setModalType] = useState<ModalType>("")
+
+    const handleShowModal = (modalType: ModalType) => {
+        setIsOpen(true);
+        setModalType(modalType)
+    }
+
     return (
         <>
-            <div className="fixed bottom-0 w-[100%] md:w-[80%] mx-auto bg-[#121212] px-10">
+            <div className="fixed bottom-0 w-[100%] md:w-[80%] mx-auto bg-[#121212] px-10 ">
                 <div className="relative">
 
 
-                    <button onClick={() => setIsOpen(true)} className='min-w-full flex items-center justify-between gap-2 text-xs md:text-base p-3 pr-2 text-gray-400 rounded-md bg-transparent outline-none border-2 border-[#202020] focus-visible:outline-[#202020] focus-visible:outline-offset-0'>
-                        <p className='text-start'>Type '/' for quick access to the command menu. Use '||' to enter multiple prompts.</p>
+                    <button onClick={() => handleShowModal("command")} className='min-w-full flex items-center justify-between gap-2 text-xs md:text-base p-3 pr-2 text-gray-400 rounded-md bg-transparent outline-none border-2 border-[#202020] focus-visible:outline-[#202020] focus-visible:outline-offset-0'>
+                        <p className='text-start truncate'>Type '/' for quick access to the command menu. Use '||' to enter multiple prompts.</p>
                         <span className='min-w-fit ml-auto flex items-center gap-2 duration-300 hover:bg-white/5 p-2 rounded-md'>
                             <img src={`/assets/icons/command.png`} alt="command" />
                             <img src={`/assets/icons/paper-plane-sharp-solid.png`} alt="paper-plane-sharp-solid" className='w-5 h-5' />
@@ -25,11 +34,11 @@ const ChatInput = () => {
 
                 <div className="flex items-center justify-between gap-1.5 my-2 w-full">
                     <div className="flex items-center justify-between gap-3">
-                        <Button>
+                        <Button onClick={() => handleShowModal("command")}>
                             <img src={`/assets/icons/slash.png`} alt="slash" className='size-[18px]' />
                             <span className='hover:text-white/80 text-xs md:text-base '>Commands</span>
                         </Button>
-                        <Button>
+                        <Button onClick={() => handleShowModal("webscrapping")}>
                             <img src={`/assets/icons/quote-left-sharp.png`} alt="quote-left-sharp" className='size-[18px]' />
                             <span className='hover:text-white/80 text-xs md:text-base '>Prompts</span>
                         </Button>
@@ -49,57 +58,11 @@ const ChatInput = () => {
                     </div>
                 </div>
 
-
-
             </div>
-            <CommandModal isModalOpen={isOpen} ShowModal={setIsOpen}>
-                <CommandModal.Body className='w-full md:w-[50%] rounded-md bg-[#202020] mx-auto h-auto flex flex-col'>
-                    <CommandModal.Header>
-                        <div className="flex items-center gap-2">
-                            <img src={`/assets/icons/slash.png`} alt="slash" className='size-[18px]' />
-                            <span>Command</span>
-                        </div>
-                    </CommandModal.Header>
-                    <div className="flex flex-col gap-3 p-4">
 
-                        <div className="flex flex-col gap-5 bg-[#121212] p-5 rounded-md ">
-                            <div className="flex items-center gap-2 h-10 w-full ">
-                                <img src={`/assets/icons/earth-shape.png`} alt="earth-shape" className='size-4' />
-                                <span>Web Search</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-2 w-full">
-                                <input
-                                    type="text"
-                                    placeholder='Search Term'
-                                    className='p-2 rounded-md text-sm placeholder:text-[#797979] bg-transparent outline-none border-none focus-visible:outline-white/5 focus-visible:outline-offset-0 flex-1' />
-                                <div className="flex items-center gap-2">
-                                    <Button className='border-2 border-white/10 text-white/80 p-2 py-1 rounded-md '>Advanced</Button>
-                                    <Button className='bg-[#333333] border-2 border-transparent text-white/80 p-2 py-1 rounded-md '>Insert</Button>
-                                </div>
-                            </div>
-                        </div>
+            {modalType === "command" && <Command isOpen={isOpen} setIsOpen={setIsOpen} setModalType={setModalType} />}
+            {modalType === "webscrapping" && <WebScrapping isOpen={isOpen} setIsOpen={setIsOpen} setModalType={setModalType} />}
 
-                        <div className="flex flex-col gap-5 bg-[#121212] p-5 rounded-md ">
-                            <div className="flex items-center gap-2 h-10 w-full ">
-                                <img src={`/assets/icons/link.png`} alt="link" className='size-4' />
-                                <span>Include url</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-2 w-full">
-                                <input
-                                    type="text"
-                                    placeholder='Search Term'
-                                    className='p-2 rounded-md text-sm placeholder:text-[#797979] bg-transparent outline-none border-none focus-visible:outline-white/5 focus-visible:outline-offset-0 flex-1' />
-                                <div className="flex items-center gap-2">
-                                    <Button className='border-2 border-white/10 text-white/80 p-2 py-1 rounded-md '>Advanced</Button>
-                                    <Button className='bg-[#333333] border-2 border-transparent text-white/80 p-2 py-1 rounded-md '>Insert</Button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </CommandModal.Body>
-            </CommandModal>
         </>
     )
 }

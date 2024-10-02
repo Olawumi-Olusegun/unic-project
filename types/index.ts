@@ -7,3 +7,5 @@ export type SidebarProps = {
         toggleLibrary: () => void;
     }
 }
+
+export type ModalType = "command" | "webscrapping" | "";

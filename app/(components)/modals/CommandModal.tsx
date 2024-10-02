@@ -1,12 +1,15 @@
 import React, { createContext, useContext, ReactNode, HtmlHTMLAttributes, useRef, useEffect } from 'react';
 import Button from '../Button';
 import { cn } from '@/utils/cn';
+import { ModalType } from '@/types';
 
 // Define the context type for internal use in the Modal
 interface ModalContextType {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+
 
 interface CloseModalProps extends HtmlHTMLAttributes<HTMLButtonElement> {
     className?: string;
@@ -35,15 +38,21 @@ interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
     isModalOpen: boolean;
     ShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
+    modalType?: ModalType;
 }
 // Define the modal component props
 interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;
     children?: ReactNode;
 }
+interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+    className?: string;
+    children?: ReactNode;
+}
 
 // Main Modal component
-const CommandModal = ({ className = '', isModalOpen, ShowModal, children, ...props }: ModalProps) => {
+const CommandModal = ({ className = '', isModalOpen, ShowModal, modalType, setModalType, children, ...props }: ModalProps) => {
 
     const modalRef = useRef(null);
 
@@ -56,11 +65,12 @@ const CommandModal = ({ className = '', isModalOpen, ShowModal, children, ...pro
 
             if (modalRef?.current && event.key === 'Escape') {
                 ShowModal(false);
+                setModalType('')
             }
 
             if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-                console.log('Command + Return (Enter) pressed!');
                 ShowModal(false);
+                setModalType('')
             }
         }
 
@@ -103,10 +113,19 @@ const Header = ({ children, className, ...props }: HeaderProps) => (
 );
 
 const Body = ({ children, className, ...props }: ModalBodyProps) => (
-    <div onClick={(event) => event.stopPropagation()} className={cn("flex flex-col gap-3", className)} {...props}>
+    <div onClick={(event) => event.stopPropagation()} className={cn("flex flex-col gap-3 ", className)} {...props}>
         {children}
     </div>
 );
+
+
+const Footer = ({ children, className, ...props }: ModalFooterProps) => {
+    return (
+        <div className={cn("w-full flex items-center gap-3", className)} {...props}>
+            {children}
+        </div>
+    )
+}
 
 // Modal close button
 const CloseButton = ({ className = '', ...props }: CloseModalProps) => {
@@ -135,5 +154,6 @@ const CloseButton = ({ className = '', ...props }: CloseModalProps) => {
 CommandModal.Header = Header;
 CommandModal.Body = Body;
 CommandModal.CloseButton = CloseButton;
+CommandModal.Footer = Footer;
 
 export default CommandModal;
