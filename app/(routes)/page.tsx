@@ -1,11 +1,11 @@
+"use client"
 import React from 'react'
 import TextDisplay from '../(components)/ChatDisplay'
 import Button from '../(components)/Button'
 import ChatInput from '../(components)/ChatInput'
-import { ArrowDownSvg, SharpSolidSvg, SplitShapeSvg, TriangleSvg } from '../(components)/svgs'
-
 
 const MainPage = () => {
+
     return (
         <>
             <div className='relative my-16 px-10 w-full flex-1 flex flex-col gap-4 h-screen overflow-y-auto no-scrollbar'>
@@ -73,8 +73,6 @@ const MainPage = () => {
                         </Button>
                     </TextDisplay.Buttons>
                 </TextDisplay>
-
-
             </div>
             <ChatInput />
         </>
