@@ -8,4 +8,4 @@ export type SidebarProps = {
     }
 }
 
-export type ModalType = "command" | "webscrapping" | "";
+export type ModalType = "command" | "webscrapping" | "editor" | "";

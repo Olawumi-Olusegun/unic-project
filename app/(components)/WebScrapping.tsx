@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import Button from './Button';
 import CommandModal from './modals/CommandModal';
 import { ModalType } from '@/types';
@@ -10,9 +10,8 @@ interface WebScrappingProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
+
 }
-
-
 
 const WebScrapping = ({ isOpen, setIsOpen, setModalType }: WebScrappingProps) => {
 

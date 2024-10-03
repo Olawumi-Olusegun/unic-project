@@ -8,7 +8,7 @@ const MainPage = () => {
 
     return (
         <>
-            <div className='relative my-16 px-10 w-full flex-1 flex flex-col gap-4 h-screen overflow-y-auto no-scrollbar'>
+            <div className='relative my-5 px-10 w-full flex-1 flex flex-col gap-6 h-screen overflow-y-auto no-scrollbar'>
 
                 <TextDisplay className='bg-[#15272A]'>
                     <TextDisplay.Header>
@@ -44,7 +44,7 @@ const MainPage = () => {
                     <TextDisplay.Text className='text-white/80 px-0 '>
                         Create a responsive login form component in React using functional components and hooks. The form should include fields for a username and password, with validation rules: the username must be an email address, and the password should be at least 8 characters long. Include state management for form inputs, error messages for validation, and a submit button that triggers a mock API call to authenticate the user. Style the form using CSS-in-JS with styled-components or a similar library, ensuring it looks good on both desktop and mobile screens.
                     </TextDisplay.Text>
-                    <TextDisplay.Buttons>
+                    <TextDisplay.Buttons className='self-end'>
                         <Button className='size-8 duration-300 hover:bg-white/5 flex items-center justify-center rounded-md '>
                             <img src={`/assets/icons/sharp-solid.png`} alt="sharp-solid" className='size-4' />
                         </Button>
@@ -61,7 +61,7 @@ const MainPage = () => {
                     <TextDisplay.Text className='text-white/80  bg-[#202020] py-5'>
                         Create a responsive login form component in React using functional components and hooks. The form should include fields for a username and password, with validation rules: the username must be an email address, and the password should be at least 8 characters long. Include state management for form inputs, error messages for validation, and a submit button that triggers a mock API call to authenticate the user. Style the form using CSS-in-JS with styled-components or a similar library, ensuring it looks good on both desktop and mobile screens.
                     </TextDisplay.Text>
-                    <TextDisplay.Buttons>
+                    <TextDisplay.Buttons className='self-end'>
                         <Button className='size-8 duration-300 hover:bg-white/5 flex items-center justify-center rounded-md '>
                             <img src={`/assets/icons/sharp-solid.png`} alt="sharp-solid" className='size-4' />
                         </Button>

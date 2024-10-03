@@ -16,7 +16,7 @@ const HeaderTop = ({ sidebar }: SidebarProps) => {
                 </svg>
             </button>
             <div className="flex items-center ">
-                <Link href="#" className="flex items-center px-3 py-2 text-base hover:bg-white/5 rounded-md">
+                <Link href="/" className="flex items-center px-3 py-2 text-base hover:bg-white/5 rounded-md">
                     Dashboard
                 </Link>
                 <Link href="#" className="flex items-center px-3 py-2 text-base hover:bg-white/5 rounded-md">

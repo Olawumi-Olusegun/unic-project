@@ -12,13 +12,13 @@ const SubHeading = () => {
                     Frontend Task
                     <img src={`/assets/icons/pen.png`} alt="pen" className='size-3' />
                 </Link>
-                <div className='flex items-center justify-center gap-2 bg-[#202020] rounded-md overflow-hidden'>
+                <div className='flex items-center my-1.5 justify-center bg-[#202020] rounded-md overflow-hidden'>
 
-                    <Button className='p-2.5 rounded-md'> Stream </Button>
+                    <Button className='self-center hover:bg-white/5 duration-300 px-4 py-2.5 text-sm'> Stream </Button>
 
-                    <Button className='p-2.5 rounded-md'> Parallel </Button>
+                    <Button className='self-center hover:bg-white/5 duration-300 px-4 py-2.5 text-sm'> Parallel </Button>
 
-                    <Button className='bg-[#E4E4E4] text-[#202020] font-semibold p-2.5'>
+                    <Button className='bg-[#E4E4E4] text-[#202020] hover:bg-white/70 duration-300 text-sm font-semibold self-center px-4 py-2'>
                         Sequential
                     </Button>
 

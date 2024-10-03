@@ -3,23 +3,24 @@ import Button from '../Button';
 import { cn } from '@/utils/cn';
 import { ModalType } from '@/types';
 
-// Define the context type for internal use in the Modal
+// ModalContextType type for internal use in the Modal
 interface ModalContextType {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-
+// CloseModalProps type for internal use in the Modal
 interface CloseModalProps extends HtmlHTMLAttributes<HTMLButtonElement> {
     className?: string;
 }
 
+// HeaderProps type for internal use in the Modal
 interface HeaderProps extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
 }
 
-// Create a context for the modal
+// ModalContext
 const ModalContext = createContext<ModalContextType>({ isOpen: false, setIsOpen: () => { } });
 
 
@@ -54,24 +55,23 @@ interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 // Main Modal component
 const CommandModal = ({ className = '', isModalOpen, ShowModal, modalType, setModalType, children, ...props }: ModalProps) => {
 
-    const modalRef = useRef(null);
+    const modalRef = useRef<HTMLDivElement | null>(null);
 
     const contextValue = { isOpen: isModalOpen, setIsOpen: ShowModal };
 
     useEffect(() => {
 
+        // Handle keyboard button events 
         const handleEscKeyPress = (event: KeyboardEvent) => {
+            // Ensures the set the view to top
             window.scrollTo(0, 0);
 
+            // Close Modal on ESCAPE KEY press
             if (modalRef?.current && event.key === 'Escape') {
                 ShowModal(false);
                 setModalType('')
             }
 
-            if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-                ShowModal(false);
-                setModalType('')
-            }
         }
 
         if (typeof window !== undefined) {
@@ -81,7 +81,7 @@ const CommandModal = ({ className = '', isModalOpen, ShowModal, modalType, setMo
             }
         }
 
-
+        // Cleanup side effects
         return () => {
             document.body.style.overflow = "auto";
             document.removeEventListener("keydown", handleEscKeyPress);
@@ -105,9 +105,9 @@ const CommandModal = ({ className = '', isModalOpen, ShowModal, modalType, setMo
 // Compound components
 const Header = ({ children, className, ...props }: HeaderProps) => (
     <div className={cn("w-full relative border-b p-3 px-4 border-white/10 flex items-center gap-4 ", className)} {...props}>
-        <div className="flex items-center gap-2'">
+        <h2 className="flex items-center gap-2">
             {children}
-        </div>
+        </h2>
         <CloseButton />
     </div>
 );

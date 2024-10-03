@@ -15,12 +15,12 @@ const Sidebar = ({ sidebar }: SidebarProps) => {
                 <button type='button' onClick={toggleSidebar} className="text-xl font-bold text-[15px flex items-center gap-1">
                     <img src={`/assets/icons/UNIC-logo.png`} alt="UNIC-logo" />
                 </button>
-                <button className="bg-blue-500 hover:bg-blue-700 duration-300 text-[15px] text-start text-black font-bold py-2 px-4 rounded-full w-full">
+                <button className="bg-blue-500 hover:bg-blue-700 duration-300 text-[15px] text-start text-black font-semibold py-2 px-4 rounded-full w-full">
                     + New Chat
                 </button>
             </div>
 
-            <ul className="flex-1 flex flex-col gap-4">
+            <ul className="flex-1 flex flex-col gap-3">
                 <li>
                     <Link href="#" className="flex items-center gap-2 px-4 py-2 text-[15px] text-white hover:bg-white/5 rounded-md">
                         <img src={`/assets/icons/clock-rotate-left.png`} alt="clock-rotate-left" className='size-3' />
