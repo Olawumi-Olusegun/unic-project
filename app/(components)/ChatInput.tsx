@@ -4,17 +4,31 @@ import Button from './Button'
 import WebScrapping from './WebScrapping';
 import Command from './Command';
 import { ModalType } from '@/types';
-import axios from 'axios';
 import Link from 'next/link';
+import { useShallow } from 'zustand/react/shallow';
+import { useCombineStore } from '@/store';
+import { useQuery } from '@tanstack/react-query';
+import { scrapeWebsiteData } from '@/services';
+import toast from 'react-hot-toast';
 
 const ChatInput = () => {
 
     const [isOpen, setIsOpen] = useState(true);
 
-    const [modalType, setModalType] = useState<ModalType>("")
-    const [command, setCommand] = useState("");
-    const [result, setResult] = useState("");
-    const [isLoading, setIsLoading] = useState(false)
+    const [modalType, setModalType] = useState<ModalType>("");
+
+    const { command, setResponse, setCommand } = useCombineStore(useShallow((state) => ({
+        command: state.command,
+        setResponse: state.setResponse,
+        setCommand: state.setCommand,
+    })));
+
+    // perform data scraping using tanstack query
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["scrape-data"],
+        queryFn: async () => scrapeWebsiteData(`/api/scrape-data?url=${command}`),
+        enabled: !!command,
+    });
 
     const handleShowModal = (modalType: ModalType) => {
         setIsOpen(true);
@@ -40,27 +54,12 @@ const ChatInput = () => {
     }, []);
 
 
-    const handleDataScrapping = async () => {
-
-        try {
-            setIsLoading(true);
-            const { data } = await axios.get(`/api/scrape-data?url=${command}`);
-
-            if (data) {
-                setResult(data);
-            }
-
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     useEffect(() => {
         if (!command) return;
-        handleDataScrapping();
-    }, [command])
+        if (data) setResponse(data);
+        if (error) toast.error(error.message)
+    }, [command, data, error])
+
 
     return (
         <>

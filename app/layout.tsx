@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "./globals.css";
-
+import TanstackQueryProvider from "./(components)/Provider";
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
   description: "An accessement based project",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +26,10 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
-        {children}
+        <TanstackQueryProvider>
+          {children}
+        </TanstackQueryProvider>
+        <Toaster position='top-center' />
       </body>
     </html>
   );

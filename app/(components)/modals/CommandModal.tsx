@@ -55,6 +55,7 @@ interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 // Main Modal component
 const CommandModal = ({ className = '', isModalOpen, ShowModal, modalType, setModalType, children, ...props }: ModalProps) => {
 
+
     const modalRef = useRef<HTMLDivElement | null>(null);
 
     const contextValue = { isOpen: isModalOpen, setIsOpen: ShowModal };
