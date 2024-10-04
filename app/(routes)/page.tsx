@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import TextDisplay from '../(components)/ChatDisplay'
 import Button from '../(components)/Button'
 import ChatInput from '../(components)/ChatInput'
-import RenderContent from '../(components)/RenderContent'
+import RenderContent, { CodeBlocks } from '../(components)/RenderContent'
 import { useCombineStore } from '@/store'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -98,17 +98,21 @@ const MainPage = () => {
 
                 {/* PERSISTED MESSAGES */}
                 {
-                    messages.length > 0 && messages.map((message, index) => (
+                    messages?.length > 0 && messages.map((message, index) => (
                         <TextDisplay
                             key={`index-${index}`}
-                            className={`${message.isBot ? "ml-auto" : ""} bg-transparent px-0`} >
+                            className={`rounded-md ${message.isBot ? "ml-auto" : ""} bg-transparent px-0`} >
                             <TextDisplay.Header className='px-0'>
                                 <span>{message.isBot ? "Google's GenerativeAI." : "You."}</span>
                             </TextDisplay.Header>
-                            <TextDisplay.Text className='text-white/80 bg-[#202020] py-5'>
-                                <RenderContent content={message.text} />
+                            <TextDisplay.Text className='text-white/80'>
+                                {message.isBot
+                                    ? <CodeBlocks content={message} />
+                                    : <RenderContent content={message.text} />
+                                }
+
                             </TextDisplay.Text>
-                            <TextDisplay.Buttons className={message.isBot ? "self-end" : "self-start"}>
+                            <TextDisplay.Buttons className={message.isBot ? "self-end mr-5" : "self-start"}>
                                 <Button className='size-8 duration-300 hover:bg-white/5 flex items-center justify-center rounded-md'>
                                     <img src={`/assets/icons/sharp-solid.png`} alt="sharp-solid" className='size-4' />
                                 </Button>

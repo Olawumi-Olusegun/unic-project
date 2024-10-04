@@ -7,8 +7,8 @@ const SubHeading = () => {
     return (
         <div className='flex items-center justify-between gap-2 border-y border-y-[#202020]'>
 
-            <div className="px-2.5 w-full flex items-center md:justify-between justify-center gap-2">
-                <Link href={"#"} className="hidden md:flex items-center gap-2">
+            <div className="px-2.5 w-full flex items-center lg:justify-between justify-center gap-2">
+                <Link href={"#"} className="hidden lg:flex items-center gap-2">
                     Frontend Task
                     <img src={`/assets/icons/pen.png`} alt="pen" className='size-3' />
                 </Link>
@@ -23,7 +23,7 @@ const SubHeading = () => {
                     </Button>
 
                 </div>
-                <div className=" items-center gap-1 hidden md:flex">
+                <div className=" items-center gap-1 hidden lg:flex">
                     <Button className='duration-300 px-3 h-9 bg-white/5 flex items-center justify-center rounded-md'>
                         chatgpt4.0
                     </Button>

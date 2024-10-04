@@ -59,13 +59,6 @@ const ChatInput = () => {
     }, []);
 
 
-    const handleStopGeneration = () => {
-        if (cancelTokenSourceRef.current) {
-            cancelTokenSourceRef.current.cancel('Request canceled by the user.');
-        }
-    };
-
-
     useEffect(() => {
         if (!command) return;
         if (data) setResponse(data);
@@ -83,10 +76,10 @@ const ChatInput = () => {
 
     return (
         <>
-            <div className="fixed bottom-0 w-[100%] md:w-[80%] mx-auto bg-[#121212] px-10 ">
+            <div className="fixed z-[400px] bottom-0  px-10 w-full md:w-[calc(100%-16rem)] bg-[#121212]  ">
                 <div className="relative">
 
-                    <button onClick={() => handleShowModal("command")} className='min-w-full flex items-center justify-between gap-2 text-xs md:text-base p-2 text-gray-400 rounded-md bg-transparent outline-none border-2 border-[#202020] focus-visible:outline-[#202020] focus-visible:outline-offset-0'>
+                    <button onClick={() => handleShowModal("command")} className='w-full hover:bg-white/5 duration-300 flex items-center justify-between gap-2 text-xs md:text-base p-2 text-gray-400 rounded-md bg-transparent outline-none border-2 border-[#202020] focus-visible:outline-[#202020] focus-visible:outline-offset-0'>
                         <p className='text-start truncate'>Type '/' for quick access to the command menu. Use '||' to enter multiple prompts.</p>
                         <span className='min-w-fit ml-auto flex items-center gap-2 duration-300 hover:bg-white/5 p-2 rounded-md'>
                             <img src={`/assets/icons/command.png`} alt="command" />
