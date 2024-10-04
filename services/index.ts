@@ -3,8 +3,7 @@ import axios, { CancelToken } from "axios"
 export const scrapeWebsiteData = async (urlString: string, cancelToken: CancelToken) => {
 
     try {
-        const { data } = await axios.get(urlString,       
-            { cancelToken: cancelToken});
+        const { data } = await axios.get(urlString,{ cancelToken });
         return data;
     } catch (error: any) {
         if (axios.isCancel(error)) {

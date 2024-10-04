@@ -38,9 +38,7 @@ const RenderContent: React.FC<RenderContentProps> = ({ content }) => {
     }, [content]);
 
     useEffect(() => {
-        if (!isMounted) {
-            setIsMounted(true)
-        }
+        setIsMounted(true)
     }, [])
 
     if (!isMounted) return null;

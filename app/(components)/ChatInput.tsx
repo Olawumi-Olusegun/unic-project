@@ -19,14 +19,15 @@ const ChatInput = () => {
     const [modalType, setModalType] = useState<ModalType>("");
     const cancelTokenSourceRef = useRef<CancelTokenSource | null>(null);
 
-    const { command, setResponse, setCommand } = useCombineStore(useShallow((state) => ({
+    const { command, response, setResponse, setCommand } = useCombineStore(useShallow((state) => ({
         command: state.command.trim(),
         setResponse: state.setResponse,
+        response: state.response,
         setCommand: state.setCommand,
     })));
 
     // perform data scraping using tanstack query
-    const { data, isLoading, error } = useQuery({
+    const { data, error } = useQuery({
         queryKey: ["scrape-data"],
         queryFn: async () => {
             cancelTokenSourceRef.current = axios.CancelToken.source();
@@ -59,17 +60,24 @@ const ChatInput = () => {
     }, []);
 
 
+
     useEffect(() => {
         if (!command) return;
-        if (data) setResponse(data);
+
+        if (data && data !== response) {
+            setResponse(data);
+        }
+
         if (error) {
             let errorMessage = "";
-            if (axios.isCancel(error)) errorMessage = "Request canceled";
-            else errorMessage = "Error fetching LLM response";
-            toast.error(errorMessage)
+            if (axios.isCancel(error)) {
+                errorMessage = "Request canceled";
+            } else {
+                errorMessage = "Error fetching LLM response";
+            }
+            toast.error(errorMessage);
         }
-    }, [command, data, error]);
-
+    }, [command, data, error, setResponse, response]);
 
 
 
@@ -80,7 +88,7 @@ const ChatInput = () => {
                 <div className="relative">
 
                     <button onClick={() => handleShowModal("command")} className='w-full hover:bg-white/5 duration-300 flex items-center justify-between gap-2 text-xs md:text-base p-2 text-gray-400 rounded-md bg-transparent outline-none border-2 border-[#202020] focus-visible:outline-[#202020] focus-visible:outline-offset-0'>
-                        <p className='text-start truncate'>Type '/' for quick access to the command menu. Use '||' to enter multiple prompts.</p>
+                        <p className='text-start truncate'>{"Type '/' for quick access to the command menu. Use '||' to enter multiple prompts."}</p>
                         <span className='min-w-fit ml-auto flex items-center gap-2 duration-300 hover:bg-white/5 p-2 rounded-md'>
                             <img src={`/assets/icons/command.png`} alt="command" />
                             <img src={`/assets/icons/paper-plane-sharp-solid.png`} alt="paper-plane-sharp-solid" className='w-5 h-5' />

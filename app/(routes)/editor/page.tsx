@@ -18,14 +18,14 @@ import axios, { CancelTokenSource } from 'axios';
 const Editor = () => {
     const ReactQill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
 
-    const [isMounted, setMounted] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
     const [showPreviewEditor, setShowPreviewEditor] = useState(false);
     const cancelTokenSourceRef = useRef<CancelTokenSource | null>(null);
 
     const queryClient = useQueryClient();
 
     const { response, editorCommand, setResponse, setEditorCommand } = useCombineStore(useShallow((state) => ({
-        response: state.response,
+        response: state.response.trim(),
         editorCommand: state.editorCommand.trim(),
         setResponse: state.setResponse,
         setEditorCommand: state.setEditorCommand,
@@ -53,13 +53,16 @@ const Editor = () => {
     };
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        if (data && data !== response) {
+            setResponse(data);
+        }
+        if (error) toast.error(error.message)
+    }, [data, error, setResponse, response]);
 
     useEffect(() => {
-        if (data) setResponse(data);
-        if (error) toast.error(error.message)
-    }, [data, error]);
+        setIsMounted(() => true);
+    }, []);
+
 
     if (!isMounted) return null;
 

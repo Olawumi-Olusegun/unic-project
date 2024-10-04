@@ -23,8 +23,8 @@ const MainPage = () => {
     }, [])
 
     useEffect(() => {
-        if (!isMounted) setIsMounted(true)
-    }, [])
+        setIsMounted(() => true);
+    }, []);
 
     if (!isMounted) return null;
 
@@ -43,10 +43,10 @@ const MainPage = () => {
 
                 <TextDisplay className='bg-transparent px-0'>
                     <TextDisplay.Header className='px-0'>
-                        World-Class React/Front-End Developer . Google's GenerativeAI
+                        {"World-Class React/Front-End Developer . Google's GenerativeAI"}
                     </TextDisplay.Header>
                     <TextDisplay.Text className='px-0'>
-                        How can I help you today to ensure your prompts yield the best possible results?
+                        {" How can I help you today to ensure your prompts yield the best possible results?"}
                     </TextDisplay.Text>
                     <TextDisplay.Buttons>
                         <Button className='size-8 duration-300 hover:bg-white/5 flex items-center justify-center rounded-md '>
