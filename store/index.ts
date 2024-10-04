@@ -16,7 +16,7 @@ export const useCombineStore = create<StoreProps>()(
 			{
 				name: 'local-storage',
 				partialize: (state) => ({
-					response: state.response,
+					messages: state.messages,
 				}),
 			}
 		)

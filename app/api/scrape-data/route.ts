@@ -13,7 +13,6 @@ export const GET = async (req: NextRequest) => {
 
     const { url, max_execution_time, filter, store } = filterSearchString(urlString);
 
-    console.log(url)
 
     if (!url) {
       return  NextResponse.json("URL is required", {status: 400});

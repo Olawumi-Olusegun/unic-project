@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from './Button'
 import WebScrapping from './WebScrapping';
 import Command from './Command';
@@ -10,15 +10,17 @@ import { useCombineStore } from '@/store';
 import { useQuery } from '@tanstack/react-query';
 import { scrapeWebsiteData } from '@/services';
 import toast from 'react-hot-toast';
+import axios, { CancelTokenSource } from 'axios';
 
 const ChatInput = () => {
 
     const [isOpen, setIsOpen] = useState(true);
 
     const [modalType, setModalType] = useState<ModalType>("");
+    const cancelTokenSourceRef = useRef<CancelTokenSource | null>(null);
 
     const { command, setResponse, setCommand } = useCombineStore(useShallow((state) => ({
-        command: state.command,
+        command: state.command.trim(),
         setResponse: state.setResponse,
         setCommand: state.setCommand,
     })));
@@ -26,7 +28,10 @@ const ChatInput = () => {
     // perform data scraping using tanstack query
     const { data, isLoading, error } = useQuery({
         queryKey: ["scrape-data"],
-        queryFn: async () => scrapeWebsiteData(`/api/scrape-data?url=${command}`),
+        queryFn: async () => {
+            cancelTokenSourceRef.current = axios.CancelToken.source();
+            return await scrapeWebsiteData(`/api/scrape-data?url=${command}`, cancelTokenSourceRef.current.token)
+        },
         enabled: !!command,
     });
 
@@ -54,11 +59,26 @@ const ChatInput = () => {
     }, []);
 
 
+    const handleStopGeneration = () => {
+        if (cancelTokenSourceRef.current) {
+            cancelTokenSourceRef.current.cancel('Request canceled by the user.');
+        }
+    };
+
+
     useEffect(() => {
         if (!command) return;
         if (data) setResponse(data);
-        if (error) toast.error(error.message)
-    }, [command, data, error])
+        if (error) {
+            let errorMessage = "";
+            if (axios.isCancel(error)) errorMessage = "Request canceled";
+            else errorMessage = "Error fetching LLM response";
+            toast.error(errorMessage)
+        }
+    }, [command, data, error]);
+
+
+
 
 
     return (
@@ -101,7 +121,6 @@ const ChatInput = () => {
                         <span className='text-sm text-[#797979]'>32/618</span>
                     </div>
                 </div>
-
             </div>
 
             {modalType === "command" && <Command isOpen={isOpen} setIsOpen={setIsOpen} command={command} setModalType={setModalType} setCommand={setCommand} />}

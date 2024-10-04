@@ -31,7 +31,7 @@ const Header = ({ children, className = '', ...props }: HeaderProps) => {
 }
 
 const Text = ({ children, className = '', ...props }: TextProps) => {
-    return <p className={cn(`px-5 rounded-md`, className)} {...props}>{children}</p>
+    return <div className={cn(`px-5 rounded-md`, className)} {...props}>{children}</div>
 }
 
 const Buttons = ({ children, className = '', ...props }: ButtonsProps) => {
