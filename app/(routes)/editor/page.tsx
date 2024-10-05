@@ -14,6 +14,7 @@ import { scrapeWebsiteData } from '@/services';
 import toast from 'react-hot-toast';
 import { LoaderCircle } from "lucide-react"
 import axios, { CancelTokenSource } from 'axios';
+import { useDebounce } from '@/app/(hooks)/useDebounce';
 
 const Editor = () => {
     const ReactQill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
@@ -31,6 +32,8 @@ const Editor = () => {
         setEditorCommand: state.setEditorCommand,
     })));
 
+    const debouncedCommand = useDebounce(editorCommand, 3000);
+
     // perform data scraping using tanstack query
     const { data, isLoading, error } = useQuery({
         queryKey: ["scrape-data"],
@@ -38,7 +41,7 @@ const Editor = () => {
             cancelTokenSourceRef.current = axios.CancelToken.source();
             return await scrapeWebsiteData(`/api/scrape-data?url=${editorCommand}`, cancelTokenSourceRef.current.token)
         },
-        enabled: !!editorCommand,
+        enabled: !!debouncedCommand,
     });
 
     const handleEditorChange = (value: string) => {

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { scrapeWebsiteData } from '@/services';
 import toast from 'react-hot-toast';
 import axios, { CancelTokenSource } from 'axios';
+import { useDebounce } from '../(hooks)/useDebounce';
 
 const ChatInput = () => {
 
@@ -26,6 +27,8 @@ const ChatInput = () => {
         setCommand: state.setCommand,
     })));
 
+    const debouncedCommand = useDebounce(command, 3000);
+
     // perform data scraping using tanstack query
     const { data, error } = useQuery({
         queryKey: ["scrape-data"],
@@ -33,7 +36,7 @@ const ChatInput = () => {
             cancelTokenSourceRef.current = axios.CancelToken.source();
             return await scrapeWebsiteData(`/api/scrape-data?url=${command}`, cancelTokenSourceRef.current.token)
         },
-        enabled: !!command,
+        enabled: !!debouncedCommand,
     });
 
     const handleShowModal = (modalType: ModalType) => {
