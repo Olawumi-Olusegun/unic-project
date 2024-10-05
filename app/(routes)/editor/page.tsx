@@ -64,7 +64,6 @@ const Editor = () => {
 
     useEffect(() => {
         if (debouncedCommand) {
-            console.log(debouncedCommand)
             refetch()
         }
 
