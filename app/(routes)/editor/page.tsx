@@ -32,10 +32,12 @@ const Editor = () => {
         setEditorCommand: state.setEditorCommand,
     })));
 
+
+
     const debouncedCommand = useDebounce(editorCommand, 3000);
 
     // perform data scraping using tanstack query
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch, isRefetching } = useQuery({
         queryKey: ["scrape-data"],
         queryFn: async () => {
             cancelTokenSourceRef.current = axios.CancelToken.source();
@@ -56,11 +58,17 @@ const Editor = () => {
     };
 
     useEffect(() => {
-        if (data && data !== response) {
-            setResponse(data);
-        }
+        if (data && data !== response) setResponse(data);
         if (error) toast.error(error.message)
     }, [data, error, setResponse, response]);
+
+    useEffect(() => {
+        if (debouncedCommand) {
+            console.log(debouncedCommand)
+            refetch()
+        }
+
+    }, [debouncedCommand]);
 
     useEffect(() => {
         setIsMounted(() => true);
@@ -88,9 +96,9 @@ const Editor = () => {
                     <Button onClick={() => setEditorCommand(appConstants.INPUT_STRING)} className='bg-[#333333] border-2 border-transparent text-white/80 p-2 py-1 rounded-md '>
                         <span>Insert</span>
                     </Button>
-                    {isLoading && (
+                    {isLoading || isRefetching && (
                         <Button
-                            disabled={!isLoading}
+                            disabled={!isLoading || !isRefetching}
                             onClick={handleStopGeneration} className='bg-red-500 border-2 border-transparent text-white/80 p-2 py-1 rounded-md '>
                             <span>Stop</span>
                             <LoaderCircle size={20} className='animate-spin' />
